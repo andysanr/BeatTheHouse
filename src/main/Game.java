@@ -1,8 +1,11 @@
 package main;
 
+import gamestates.Gamestate;
+
 public class Game implements Runnable {
 
     private GameWindow gameWindow;
+    private MenuPanel menuPanel;
     private GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS_SET = 120;
@@ -10,22 +13,39 @@ public class Game implements Runnable {
 
     public Game() {
 
+        menuPanel = new MenuPanel();
         gamePanel = new GamePanel();
-        gameWindow = new GameWindow(gamePanel);
+        gameWindow = new GameWindow(menuPanel, gamePanel);
         gamePanel.requestFocus();
         startGameLoop();
 
     }
 
     private void startGameLoop() {
+
         gameThread = new Thread(this);
         gameThread.start();
 
     }
 
     public void update() {
-        gamePanel.updateGame();
+
+        switch(Gamestate.state) {
+            case MENU:
+                //do menu
+                break;
+
+            case PLAYING:
+                //do gameplay
+                gamePanel.updateGame();
+                break;
+
+            default:
+                break;
+            }
     }
+
+
 
     @Override
     public void run() {

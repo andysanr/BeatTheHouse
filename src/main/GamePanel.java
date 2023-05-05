@@ -1,5 +1,4 @@
 package main;
-import inputs.KeyboardInputs;
 import inputs.MouseInputs;
 
 import java.awt.*;
@@ -9,7 +8,6 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import static utilz.Constants.PlayerConstants.*;
-import static utilz.Constants.Directions.*;
 
 public class GamePanel extends JPanel {
 
@@ -19,8 +17,6 @@ public class GamePanel extends JPanel {
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 40;
     private int playerAction = HEARTS;
-    private int playerDir = -1;
-    private boolean moving = false;
 
     public GamePanel() {
 
@@ -30,7 +26,6 @@ public class GamePanel extends JPanel {
         loadAnimations();
 
         setPanelsize();
-        addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
 
@@ -66,22 +61,13 @@ public class GamePanel extends JPanel {
 
 
     private void setPanelsize() {
-        Dimension size = new Dimension(1280, 800);
+        Dimension size = new Dimension(1280, 720);
         setMinimumSize(size);
         setPreferredSize(size);
         setMaximumSize(size);
 
     }
 
-    public void setDirection(int direction) {
-        this.playerDir = direction;
-        moving = true;
-
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
     private void updateAnimationTick() {
 
         aniTick++;
@@ -94,36 +80,16 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void setAnimation() {
-        if (moving)
-            playerAction = SPADES;
-        else
-            playerAction = HEARTS;
-    }
+//    private void setAnimation() {
+//        if (moving)
+//            playerAction = SPADES;
+//        else
+//            playerAction = HEARTS;
+//    }
 
-    private void updatePos() {
-        if(moving) {
-            switch(playerDir) {
-                case LEFT:
-                    xDelta-=5;
-                    break;
-                case UP:
-                    yDelta-=5;
-                    break;
-                case RIGHT:
-                    xDelta+=5;
-                    break;
-                case DOWN:
-                    yDelta+=5;
-                    break;
-
-            }
-        }
-    }
     public void updateGame() {
         updateAnimationTick();
-        setAnimation();
-        updatePos();
+        //setAnimation();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
